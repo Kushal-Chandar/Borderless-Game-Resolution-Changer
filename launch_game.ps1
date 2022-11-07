@@ -1,10 +1,33 @@
-param([string]$game_executable)
-param([Int32]$x = 1980)
-param([Int32]$y = 1080)
+<#
+    .Synopsis
+        Launch borderless games with custom resolution.
+    .Description
+        Sets display resolution to desired resolution before launching the game. This script has an optional features that kills the windows explorer process.
+    .Example
+        .\launch_game.ps1 -game_executable .\path\to\game.exe  -x 1920 -y 1080 -TurnOffExplorer
+    .Example
+        .\launch_game.ps1 .\path\to\game.exe 1920 1080 -TurnOffExplorer
+    #>
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $true, Position = 1)]
+    [ValidateNotNullOrEmpty()]
+    [string]
+    $GameExecutablePath,
+    [Parameter(Position = 2)]
+    [ValidateNotNullOrEmpty()]
+    [Int32]
+    $Width = 1980,
+    [Parameter(Position = 3)]
+    [ValidateNotNullOrEmpty()]
+    [Int32]
+    $Height = 1080,
+    [switch]
+    $TurnOffExplorer
+)
 
 
 Function Set-ScreenResolution {
-
     <#
     .Synopsis
         Sets the Screen Resolution of the primary monitor
@@ -164,12 +187,23 @@ namespace Resolution
 }
 
 Add-Type -AssemblyName System.Windows.Forms
-$current_res = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize | Select-Object Width, Height
+$DisplayResolution = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize | Select-Object Width, Height
 
-Set-ScreenResolution -Width $x -Height $y
+Set-ScreenResolution -Width $Width -Height $Height | Out-Null
 
-taskkill /F /IM explorer.exe
-Start-Process -Wait -FilePath "$game_executable"
-Start-Process explorer.exe
+if ($TurnOffExplorer) {
+    taskkill /F /IM explorer.exe | Out-Null
+}
 
-Set-ScreenResolution -Width $current_res.Width -Height $current_res.Height
+$GamePath = (Get-ChildItem $GameExecutablePath).Directory.FullName
+$GameExecutable = (Get-ChildItem $GameExecutablePath).Name
+
+Push-Location $GamePath
+Start-Process -FilePath "$GameExecutable" -Wait
+Pop-Location
+
+if ($TurnOffExplorer) {
+    Start-Process explorer.exe
+}
+
+Set-ScreenResolution -Width $DisplayResolution.Width -Height $DisplayResolution.Height | Out-Null
