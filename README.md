@@ -15,13 +15,13 @@ I recommend you download just the script and put it in your game folder
 Set resolution to 1920 * 1080 with windows file explorer turned off.
 
 ```powershell
-.\launch_game.ps1 -game_executable .\path\to\game.exe  -x 1920 -y 1080 -TurnOffExplorer
+.\launch_game.ps1 -GameExecutablePath .\path\to\game.exe  -Width 1920 -Height 1080 -TurnOffExplorer
 ```
 
 Set resolution to 1280 * 720 with windows file explorer turned on.
 
 ```powershell
-.\launch_game.ps1 -game_executable .\path\to\game.exe  -x 1280 -y 720
+.\launch_game.ps1 -GameExecutablePath .\path\to\game.exe  -Width 1280 -Height 720
 ```
 
 This script also supports positional parameters.
