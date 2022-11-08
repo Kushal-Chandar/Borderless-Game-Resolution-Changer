@@ -10,24 +10,22 @@ and makes the file explorer is restarted after quitting the game to desktop.
 
 ## Usage
 
-I recommend you download just the script and put it in your game folder
-
-Set resolution to 1920 * 1080 with windows file explorer turned off.
+Set resolution to 1920 \* 1080, Where you display resolution is 3840 \* 2160 windows file explorer turned off.
 
 ```powershell
-.\launch_game.ps1 -GameExecutablePath .\path\to\game.exe  -Width 1920 -Height 1080 -TurnOffExplorer
+.\launch_game.ps1 -GameExecutablePath .\path\to\game.exe -GameWidth 1920 -GameHeight 1080 -DisplayWidth 3840 -DisplayHeight 2160 -TurnOffExplorer
 ```
 
-Set resolution to 1280 * 720 with windows file explorer turned on.
+Set resolution to 1280 \* 720, Where you display resolution is 1920 \* 1080 windows file explorer turned on.
 
 ```powershell
-.\launch_game.ps1 -GameExecutablePath .\path\to\game.exe  -Width 1280 -Height 720
+.\launch_game.ps1 -GameExecutablePath .\path\to\game.exe -GameWidth 1280 -GameHeight 720 -DisplayWidth 1920 -DisplayHeight 1080
 ```
 
 This script also supports positional parameters.
 
-Set resolution to 1920 * 1080 with windows file explorer turned off.
+Set resolution to 1920 \* 1080, Where you display resolution is 3840 \* 2160 windows file explorer turned off.
 
 ```powershell
-.\launch_game.ps1 .\path\to\game.exe 1920 1080 -TurnOffExplorer
+.\launch_game.ps1 .\path\to\game.exe 1920 1080 3840 2160 -TurnOffExplorer
 ```

@@ -14,14 +14,22 @@ param (
     [ValidateNotNullOrEmpty()]
     [string]
     $GameExecutablePath,
-    [Parameter(Position = 2)]
+    [Parameter(Mandatory = $true, Position = 2)]
     [ValidateNotNullOrEmpty()]
     [Int32]
-    $Width = 1980,
-    [Parameter(Position = 3)]
+    $GameWidth,
+    [Parameter(Mandatory = $true, Position = 3)]
     [ValidateNotNullOrEmpty()]
     [Int32]
-    $Height = 1080,
+    $GameHeight,
+    [Parameter(Mandatory = $true, Position = 4)]
+    [ValidateNotNullOrEmpty()]
+    [Int32]
+    $DisplayWidth,
+    [Parameter(Mandatory = $true, Position = 5)]
+    [ValidateNotNullOrEmpty()]
+    [Int32]
+    $DisplayHeight,
     [switch]
     $TurnOffExplorer
 )
@@ -186,10 +194,7 @@ namespace Resolution
     [Resolution.PrmaryScreenResolution]::ChangeResolution($width, $height)
 }
 
-Add-Type -AssemblyName System.Windows.Forms
-$DisplayResolution = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize | Select-Object Width, Height
-
-Set-ScreenResolution -Width $Width -Height $Height | Out-Null
+Set-ScreenResolution -Width $GameWidth -Height $GameHeight | Out-Null
 
 if ($TurnOffExplorer) {
     taskkill /F /IM explorer.exe | Out-Null
@@ -202,8 +207,6 @@ Push-Location $GamePath
 Start-Process -FilePath "$GameExecutable" -Wait
 Pop-Location
 
-if ($TurnOffExplorer) {
-    Start-Process explorer.exe
-}
+Start-Process explorer.exe
 
-Set-ScreenResolution -Width $DisplayResolution.Width -Height $DisplayResolution.Height | Out-Null
+Set-ScreenResolution -Width $DisplayWidth -Height $DisplayHeight | Out-Null
